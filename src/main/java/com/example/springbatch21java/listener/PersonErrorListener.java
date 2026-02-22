@@ -3,6 +3,8 @@ package com.example.springbatch21java.listener;
 import com.example.springbatch21java.model.Person;
 import com.example.springbatch21java.model.PersonError;
 import com.example.springbatch21java.repository.PersonErrorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -10,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class PersonErrorListener implements ItemProcessListener<Person, Person> {
+
+    private static final Logger log = LoggerFactory.getLogger(PersonErrorListener.class);
 
     private final PersonErrorRepository errorRepository;
 
@@ -30,6 +34,7 @@ public class PersonErrorListener implements ItemProcessListener<Person, Person> 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onProcessError(Person item, Exception e) {
+        log.error("There was an issue and this went to the Processor Error Method");
         PersonError error = new PersonError();
         error.setPersonId(item.getId());
         error.setErrorMessage(e.getMessage());

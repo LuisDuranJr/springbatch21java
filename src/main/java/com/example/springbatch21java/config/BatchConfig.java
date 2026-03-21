@@ -82,10 +82,10 @@ public class BatchConfig {
                 .reader(reader)
                 .processor(new PersonProcessor())  // Add processor here
                 .writer(writer)
-                //.listener(errorListener)
+                .listener(errorListener)
                 .faultTolerant()
-                //.skip(PersistenceException.class)
-                //.skip(NullPointerException.class)
+                .skip(PersistenceException.class)
+                .skip(NullPointerException.class)
                 .skip(IllegalArgumentException.class)
                 .listener(personSkipListener)// skip NPEs to continue job
                 .skipLimit(100)

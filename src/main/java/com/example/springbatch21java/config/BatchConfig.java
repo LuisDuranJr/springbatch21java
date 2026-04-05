@@ -103,9 +103,9 @@ public class BatchConfig {
     @Bean(name = "myCustomExecutor")
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(1);
-        executor.setQueueCapacity(0);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(1);
         executor.setThreadNamePrefix("batch-thread-");
         // 2. Set the handler to log the rejection
        // executor.setRejectedExecutionHandler((runnable, exec) -> {

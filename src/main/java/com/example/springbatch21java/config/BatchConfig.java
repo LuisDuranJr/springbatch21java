@@ -7,6 +7,7 @@ import com.example.springbatch21java.model.Person;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceException;
 
+import com.example.springbatch21java.repository.CoolKidsRepository;
 import org.hibernate.exception.DataException;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -76,11 +77,15 @@ public class BatchConfig {
     }
 
     @Bean
-    public Step step(StepBuilderFactory stepBuilderFactory, FlatFileItemReader<Person> reader, JpaItemWriter<Person> writer, PersonErrorListener errorListener, PersonSkipListener personSkipListener,@Qualifier("myCustomExecutor")TaskExecutor taskExecutor) {
+    public Step step(StepBuilderFactory stepBuilderFactory, FlatFileItemReader<Person> reader, JpaItemWriter<Person> writer,
+                     PersonErrorListener errorListener,
+                     PersonSkipListener personSkipListener,
+                     @Qualifier("myCustomExecutor")TaskExecutor taskExecutor,
+                     CoolKidsRepository coolKidsRepository) {
         return stepBuilderFactory.get("step")
                 .<Person, Person>chunk(10)
                 .reader(reader)
-                .processor(new PersonProcessor())  // Add processor here
+                .processor(new PersonProcessor(coolKidsRepository))  // Add processor here
                 .writer(writer)
                 .listener(errorListener)
                 .faultTolerant()
